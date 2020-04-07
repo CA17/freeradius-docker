@@ -123,7 +123,7 @@ listen {
 	#  Allowed values are:
 	#	integer port number (1812)
 	#	0 means "use /etc/services for the proper port"
-	port = 18912
+	port = 1812
 
 	#  Some systems support binding to an interface, in addition
 	#  to the IP address.  This feature isn't strictly necessary,
@@ -193,7 +193,7 @@ listen {
 listen {
 	ipaddr = *
 #	ipv6addr = ::
-	port = 18913
+	port = 1813
 	type = acct
 #	interface = eth0
 #	clients = per_socket_clients
@@ -234,7 +234,7 @@ listen {
 listen {
 	type = auth
 	ipv6addr = ::	# any.  ::1 == localhost
-	port = 18922
+	port = 1822
 #	interface = eth0
 #	clients = per_socket_clients
 	limit {
@@ -246,7 +246,7 @@ listen {
 
 listen {
 	ipv6addr = ::
-	port = 18923
+	port = 1823
 	type = acct
 #	interface = eth0
 #	clients = per_socket_clients
