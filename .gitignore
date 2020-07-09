@@ -1,0 +1,12 @@
+/config/~$bss_templates.xlsx
+.idea
+__pycache__
+.vscode
+/resources/~$bss_templates.xlsx
+/bss
+/release/
+/bssr
+/lbssr
+/resources/bssz_templates.xlsx
+/resources/~$bss_std_templates.xlsx
+/resources/~$bss_dev_templates.xlsx
