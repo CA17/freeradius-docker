@@ -2,10 +2,10 @@ docker:
 	docker build . -t freeradius-v3
 
 dockerc:
-	docker run -p 1812-1813:1812-1813/udp -p 19815:1815/tcp --add-host jxradius.net:192.168.1.5 --name freeradius -t -d freeradius-v3 lfreemate
+	docker run -p 1812-1813:1812-1813/udp -p 19815:1815/tcp --add-host jxradius.net:172.17.0.1 --name freeradius -t -d freeradius-v3 lfreemate
 
 dockerx:
-	docker run -p 1812-1813:1812-1813/udp -p 19815:1815/tcp --add-host jxradius.net:192.168.1.5 --name freeradius -t -d freeradius-v3 lfreemate -X
+	docker run -p 1812-1813:1812-1813/udp -p 19815:1815/tcp --add-host jxradius.net:172.17.0.1 --name freeradius -t -d freeradius-v3 lfreemate -X
 
 dockerrm:
 	docker rm -f freeradius
