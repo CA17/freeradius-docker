@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -22,7 +23,7 @@ var (
 	g errgroup.Group
 	h = flag.Bool("h", false, "help usage")
 	x = flag.Bool("X", false, "debug")
-	t = flag.String("t", "", "api token")
+	t = flag.String("t", "bs2radiuis", "api token")
 )
 
 func startFreeradius() {
@@ -80,6 +81,17 @@ func startCheckProc() {
 	}()
 }
 
+
+func KillRadiusProc() {
+	ps, _ := process.Processes()
+	for _, p := range ps {
+		name, _ := p.Name()
+		if strings.Contains(name, "freeradius") {
+			syscall.Kill(int(p.Pid), syscall.SIGKILL)
+		}
+	}
+}
+
 func main() {
 	flag.Parse()
 
@@ -110,17 +122,25 @@ func Sha256HashWithSalt(src string, salt string) string {
 	return fmt.Sprintf("%x", bs)
 }
 
+type ApiRequest struct {
+	Sign string `json:"sign" query:"sign" form:"sign"`
+	Data string `json:"data" query:"data" form:"data"`
+}
+
 // Handler
 func clientUpdate(c echo.Context) error {
-	sign := c.FormValue("sign")
-	data := c.FormValue("data")
-	if Sha256HashWithSalt(data, *t) != sign {
+	req := new(ApiRequest)
+	if err := c.Bind(req); err != nil {
+		return err
+	}
+	if Sha256HashWithSalt(req.Data, *t) != req.Sign {
 		return c.String(http.StatusForbidden, "Reject")
 	}
-	err := ioutil.WriteFile("/etc/freeradius/clients.conf", []byte(data), 0644)
+	err := ioutil.WriteFile("/etc/freeradius/clients.conf", []byte(req.Data), 0644)
 	if err != nil {
 		return c.String(http.StatusOK, "Failure")
 	}
+	go KillRadiusProc()
 	return c.String(http.StatusOK, "Success")
 }
 
