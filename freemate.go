@@ -136,6 +136,7 @@ func clientUpdate(c echo.Context) error {
 	if Sha256HashWithSalt(req.Data, *t) != req.Sign {
 		return c.String(http.StatusForbidden, "Reject")
 	}
+	fmt.Println(req.Data)
 	err := ioutil.WriteFile("/etc/freeradius/clients.conf", []byte(req.Data), 0644)
 	if err != nil {
 		return c.String(http.StatusOK, "Failure")
