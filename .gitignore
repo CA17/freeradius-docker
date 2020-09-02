@@ -10,3 +10,4 @@ __pycache__
 /resources/bssz_templates.xlsx
 /resources/~$bss_std_templates.xlsx
 /resources/~$bss_dev_templates.xlsx
+Makefile.local
